@@ -23,4 +23,18 @@ var _ = Describe("Memory test suite", func() {
 		})
 	})
 })
+ 
 
+var _ = Describe("Processor test suite", func() {
+	Context("PC step", func() {
+		var testMemory = Ram{} 
+		testMemory.Initialize(256)
+		var cpu = Cpu{0, &testMemory, false}
+		
+		It("Should stop on HLT", func() {
+			testMemory.WriteAt(HLT, 0x10)
+			cpu.Run()
+			Expect(cpu.pc).Should(Equal(uint16(0x11)))
+		})
+	})
+})

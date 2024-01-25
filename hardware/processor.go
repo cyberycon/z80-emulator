@@ -27,6 +27,7 @@ func (c *Cpu) Reset() {
 
 // Start executing instructions frome the current Program counter location
 func (c *Cpu) Run() {
+	c.isRunning = true
 	for c.isRunning {
 		c.pc = c.Step()
 	}
