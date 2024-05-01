@@ -1,6 +1,8 @@
 // Represents processor memory space.
 package hardware
 
+const OUT_OF_RANGE = "Address out of range"
+
 // RAM memory as an array of bytes with a sixteen bit size
 type Ram struct {
 	cells []byte
@@ -31,7 +33,7 @@ func (r *Ram) ClearMemory() {
 // Wrrite a byte to a specfied address
 func (r *Ram) WriteAt(value byte, address uint16) error {
 	if address >= r.size {
-		return &MemoryError{message: "Address out of range"}
+		return &MemoryError{message: OUT_OF_RANGE}
 	}
 	r.cells[address] = value 
 	
@@ -40,7 +42,16 @@ func (r *Ram) WriteAt(value byte, address uint16) error {
 
 func (r *Ram) Read(address uint16) (byte, error) {
 	if address >= r.size {
-		return 0, &MemoryError{message: "Address out of range"}
+		return 0, &MemoryError{message: OUT_OF_RANGE}
 	}
 	return r.cells[address], nil	
+}
+
+func (r *Ram) WriteSlice(value []byte, startAddress uint16) error {
+	if len(value) + int(startAddress) > int(r.size) {
+		return &MemoryError{message: OUT_OF_RANGE}
+	}
+	copy(r.cells[startAddress:], value)
+	return nil
+	 
 }

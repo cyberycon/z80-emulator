@@ -3,6 +3,7 @@ package hardware
 
 const NOP byte = 0X00
 const LD_A_I = 0b00111110
+const ADD_A_n = 0XC6 
 const HLT byte = 0X76
 
 
@@ -11,6 +12,7 @@ type Cpu struct {
 	memory    *Ram
 	isRunning bool
 	A byte 
+	F byte 
 }
 
 // type Register8 byte
@@ -22,7 +24,7 @@ type Cpu struct {
 // }
 
 func makeCpu(memory *Ram) *Cpu {
-	return &Cpu{0, memory, false, 0}
+	return &Cpu{0, memory, false, 0, 0}
 }
 
 // Reset the program counter to 0 
